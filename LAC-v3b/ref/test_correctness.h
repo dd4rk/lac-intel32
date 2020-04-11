@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 //test correctness of pke_dec
 int test_pke_correctness();
 
@@ -11,7 +13,7 @@ int test_ke_correctness();
 int test_ake_correctness();
 
 //calculate error bit number
-int error_bit_num(unsigned char *k1, unsigned char *k2, int num);
+int error_bit_num(uint8_t *k1, uint8_t *k2, int num);
 
 //print bytes
-int print_bytes(unsigned char *buf, int len);
+int print_bytes(uint8_t *buf, int len);

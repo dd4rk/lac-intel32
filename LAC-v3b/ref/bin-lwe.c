@@ -4,15 +4,8 @@
 #include "lac_param.h"
 
 //generate the public parameter a from seed
-int gen_a(unsigned char *a,  const unsigned char *seed)
+int gen_a(uint8_t *a,  const uint8_t *seed)
 {
-	
-	//check the pointers
-	if(a==NULL || seed==NULL)
-	{
-		return 1;
-	}
-	
 	pseudo_random_bytes(a,DIM_N,seed);
 	
 	return 0;
@@ -20,17 +13,11 @@ int gen_a(unsigned char *a,  const unsigned char *seed)
  
 //generate the small random vector for secret and error, with fixed hamming weight
 //use for e,e1,e2
-int gen_e(unsigned char *e,  unsigned char *seed)
+int gen_e(uint8_t *e,  uint8_t *seed)
 {
-	
-	if(e==NULL)
-	{
-		return 1;
-	}
-	
 	int i;
 	uint16_t buf[NUM_ONE*2];
-	gen_r((unsigned char *)buf,seed);
+	gen_r((uint8_t *)buf,seed);
 	memset(e,0,DIM_N);
 	for(i=0;i<NUM_ONE;i++)
 	{
@@ -42,14 +29,8 @@ int gen_e(unsigned char *e,  unsigned char *seed)
 }
 
 //for r,s
-int gen_r(unsigned char *r,  unsigned char *seed)
+int gen_r(uint8_t *r,  uint8_t *seed)
 {
-    
-    if(r==NULL)
-    {
-        return 1;
-    }
-    
     int i,p;
     uint16_t tmp;
     uint16_t  r_buf[DIM_N],index[SAMPLE_LEN],tmp_index,index_mk;
@@ -66,7 +47,7 @@ int gen_r(unsigned char *r,  unsigned char *seed)
     p=0;
     while(p<NUM_ONE*2)
     {
-        pseudo_random_bytes((unsigned char *)index,SAMPLE_LEN*2,seed);
+        pseudo_random_bytes((uint8_t *)index,SAMPLE_LEN*2,seed);
         //shuffle
         for(i=0;i<loop;i++)
         {
@@ -84,7 +65,7 @@ int gen_r(unsigned char *r,  unsigned char *seed)
         //update seed
         if(p<NUM_ONE*2)
         {
-            memcpy(seed,(unsigned char *)index,SEED_LEN);
+            memcpy(seed,(uint8_t *)index,SEED_LEN);
         }
     }
     //compy the first NUM_ONE positions to r
@@ -93,11 +74,11 @@ int gen_r(unsigned char *r,  unsigned char *seed)
     return 0;
 }
 
-int mul_core(const unsigned char *a, const unsigned char *s, int32_t *sum1, int32_t *sum2, unsigned int vec_num)
+int mul_core(const uint8_t *a, const uint8_t *s, int32_t *sum1, int32_t *sum2, unsigned int vec_num)
 {
 	int i,j;
-	unsigned char v[DIM_N+DIM_N];
-	unsigned char *v1_p,*v2_p;
+	uint8_t v[DIM_N+DIM_N];
+	uint8_t *v1_p,*v2_p;
 
 	uint16_t *s_one,*s_minusone;
 	
@@ -134,7 +115,7 @@ int mul_core(const unsigned char *a, const unsigned char *s, int32_t *sum1, int3
 
 
 // poly_mul  b=[as]
-int poly_mul(const unsigned char *a, const unsigned char *s, unsigned char *b, unsigned int vec_num)
+int poly_mul(const uint8_t *a, const uint8_t *s, uint8_t *b, unsigned int vec_num)
 {
 	int i;
 	int32_t sum1[DIM_N],sum2[DIM_N];
@@ -148,7 +129,7 @@ int poly_mul(const unsigned char *a, const unsigned char *s, unsigned char *b, u
 	return 0;
 }
 //b=as+e
-int poly_aff(const unsigned char *a, const unsigned char *s, unsigned char *e, unsigned char *b, unsigned int vec_num)
+int poly_aff(const uint8_t *a, const uint8_t *s, uint8_t *e, uint8_t *b, unsigned int vec_num)
 {
 	int i;
 	int32_t sum1[DIM_N],sum2[DIM_N];
@@ -163,7 +144,7 @@ int poly_aff(const unsigned char *a, const unsigned char *s, unsigned char *e, u
 }
  
 // compress: cut the low 4bit
-int poly_compress(const unsigned char *in,  unsigned char *out, const unsigned int vec_num)
+int poly_compress(const uint8_t *in,  uint8_t *out, const unsigned int vec_num)
 {
 	int i,loop;
 	loop=vec_num/2;
@@ -176,7 +157,7 @@ int poly_compress(const unsigned char *in,  unsigned char *out, const unsigned i
 	return 0;
 }
 // decompress: set the low 4bits to be 0
-int poly_decompress(const unsigned char *in,  unsigned char *out, const unsigned int vec_num)
+int poly_decompress(const uint8_t *in,  uint8_t *out, const unsigned int vec_num)
 {
 	int i,loop;
 	loop=vec_num/2;

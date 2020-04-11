@@ -2,7 +2,7 @@
 #define LINUX
 //#define WIN
 //security level
-#define LAC256
+#define LAC_LIGHT
 //modulus
 #define Q 256
 
