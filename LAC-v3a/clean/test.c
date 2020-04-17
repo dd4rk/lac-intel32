@@ -5,7 +5,7 @@
 #include "rand.h"
 
 #define CTESTS 10000
-uint64_t loop=1;
+#define LOOP 1000
 
 static void print_uint64(unsigned long long num)
 {
@@ -14,16 +14,16 @@ static void print_uint64(unsigned long long num)
 	printf("%u",(unsigned int)(num%10));
 }
 
-int main(int argc, char **argv)
+int main()
 {
 	uint8_t pk[CRYPTO_PUBLICKEYBYTES];
 	uint8_t sk[CRYPTO_SECRETKEYBYTES];
 	uint8_t k1[CRYPTO_BYTES],k2[CRYPTO_BYTES],c[CRYPTO_CIPHERTEXTBYTES];
-	int i,j;
+	size_t i,j;
 	long long int  error_num=0;
 	
 	printf("correctness test of kem_fo:\n");
-	for(j=0;j<loop;j++)
+	for(j=0;j<LOOP;j++)
 	{
 		crypto_kem_keypair(pk,sk);
 		random_bytes(k1,CRYPTO_BYTES);
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 			}
 			
 		}
-		printf("test %d error block:",j+1);
+		printf("test %lu error block:",j+1);
 		print_uint64(error_num);
 		printf("\n");
 	}

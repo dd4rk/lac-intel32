@@ -51,7 +51,7 @@ int gen_e(uint8_t *e,  uint8_t *seed)
 //for r,s
 int gen_r(uint8_t *r,  uint8_t *seed)
 {
-    int i,p;
+    size_t i,p;
     uint16_t tmp;
     uint16_t  r_buf[DIM_N],index[SAMPLE_LEN],tmp_index,index_mk;
     uint16_t mk=DIM_N-1;
@@ -94,10 +94,9 @@ int gen_r(uint8_t *r,  uint8_t *seed)
     return 0;
 }
 
-
-int mul_core(const uint8_t *a, const uint8_t *s, int32_t *sum1, int32_t *sum2, unsigned int vec_num)
+static int mul_core(const uint8_t *a, const uint8_t *s, int32_t *sum1, int32_t *sum2, unsigned int vec_num)
 {
-	int i,j;
+	size_t i,j;
 	uint8_t v[DIM_N+DIM_N];
 	uint8_t *v1_p,*v2_p;
 
@@ -130,15 +129,13 @@ int mul_core(const uint8_t *a, const uint8_t *s, int32_t *sum1, int32_t *sum2, u
 			sum2[j]-=v2_p[j];
 		}
 	}
-
 	return 0;
 }
-
 
 // poly_mul  b=[as]
 int poly_mul(const uint8_t *a, const uint8_t *s, uint8_t *b, unsigned int vec_num)
 {
-	int i;
+	size_t i;
 	int32_t sum1[DIM_N],sum2[DIM_N];
 	
 	mul_core(a,s,sum1,sum2,vec_num);
@@ -149,10 +146,11 @@ int poly_mul(const uint8_t *a, const uint8_t *s, uint8_t *b, unsigned int vec_nu
 	}
 	return 0;
 }
+
 //b=as+e
 int poly_aff(const uint8_t *a, const uint8_t *s, uint8_t *e, uint8_t *b, unsigned int vec_num)
 {
-	int i;
+	size_t i;
 	int32_t sum1[DIM_N],sum2[DIM_N];
 	
 	mul_core(a,s,sum1,sum2,vec_num);

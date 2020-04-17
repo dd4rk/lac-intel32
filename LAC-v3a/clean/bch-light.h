@@ -38,4 +38,4 @@ struct bch_control bch={
 struct gf_poly {
 unsigned int deg;
 unsigned int c[2*BCH_T+1];
-}; 
+};
