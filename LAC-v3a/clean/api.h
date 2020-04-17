@@ -2,8 +2,7 @@
 #define API_H
 
 #include <stdint.h>
-
-#include  "lac_param.h"
+#include "lac_param.h"
 
 #define CRYPTO_SECRETKEYBYTES SK_LEN+PK_LEN
 #define CRYPTO_PUBLICKEYBYTES PK_LEN
