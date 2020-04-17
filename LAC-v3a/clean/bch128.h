@@ -1,3 +1,14 @@
+#ifndef BCH128_H
+#define BCH128_H
+
+#include <stdint.h>
+
+#define BCH_N 255
+#define BCH_T 8
+#define BCH_M 8
+#define BCH_ECC_WORDS 2
+#define BCH_ECC_BYTES 8
+
 uint16_t a_pow_tab[256] = {1,2,4,8,16,32,64,128,29,58,116,232,205,135,19,38,76,152,45,90,180,117,234,201,143,3,6,12,24,48,96,192,157,
 39,78,156,37,74,148,53,106,212,181,119,238,193,159,35,70,140,5,10,20,40,80,160,93,186,105,210,185,111,222,161,95,
 190,97,194,153,47,94,188,101,202,137,15,30,60,120,240,253,231,211,187,107,214,177,127,254,225,223,163,91,182,113,226,217,
@@ -22,21 +33,17 @@ uint32_t mod8_tab_half[32] = {0,0,1827080162,1802475895,3654160324,3604951790,30
 uint32_t g[3] = {3061023729,901237947,2147483648};
 
 struct bch_control bch={
-.m = 8, 
-.t = 8, 
-.n = 255, 
-.ecc_bytes = 8, 
-.ecc_bits = 64, 
-.ecc_words = 2, 
-}; 
-
-#define BCH_N 255
-#define BCH_T 8
-#define BCH_M 8
-#define BCH_ECC_WORDS 2
-#define BCH_ECC_BYTES 8
+    .m = 8,
+    .t = 8,
+    .n = 255,
+    .ecc_bytes = 8,
+    .ecc_bits = 64,
+    .ecc_words = 2,
+};
 
 struct gf_poly {
-unsigned int deg;
-unsigned int c[2*BCH_T+1];
-}; 
+    unsigned int deg;
+    unsigned int c[2*BCH_T+1];
+};
+
+#endif
