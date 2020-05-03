@@ -8,13 +8,13 @@
 // generate the public parameter a from seed
 int gen_a(uint8_t *a, const uint8_t *seed)
 {
-    size_t i,j;
+    size_t i, j;
     uint8_t buf[SEED_LEN];
 
     pseudo_random_bytes(a, DIM_N, seed);
     hash(seed, SEED_LEN, buf);
     j = 0;
-    for(i=0;i<DIM_N;i++)
+    for(i = 0 ; i < DIM_N; i++)
     {
         while(a[i] >= Q)
         {

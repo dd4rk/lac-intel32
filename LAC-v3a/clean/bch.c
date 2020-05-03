@@ -28,7 +28,7 @@
 static void store_ecc8(uint8_t *dst, const uint32_t *src)
 {
     uint8_t pad[4];
-    unsigned int i, nwords = BCH_ECC_WORDS-1;
+    size_t i, nwords = BCH_ECC_WORDS-1;
 
     for (i = 0; i < nwords; i++) {
         *dst++ = (src[i] >> 24);
@@ -46,9 +46,9 @@ static void store_ecc8(uint8_t *dst, const uint32_t *src)
 // bch encode
 void encode_bch(const uint8_t *data, unsigned int len, uint8_t *ecc)
 {
-    int i;
+    size_t i;
     const uint32_t *p;
-    const int l = BCH_ECC_WORDS - 1;
+    const size_t l = BCH_ECC_WORDS - 1;
     uint32_t ecc_buf[BCH_ECC_WORDS];
 
     memset(ecc_buf, 0, BCH_ECC_WORDS*sizeof(uint32_t));
