@@ -20,6 +20,7 @@
 #define NUM_ONE 64 //number of 1 or -1 in noise vector
 #define HASH_TYPE "SHA256"
 #define SAMPLE_LEN 245
+#define MASK 0x1ff//mask the index of sk
 #endif
 
 #if defined(LAC128)
@@ -35,6 +36,7 @@
 #define NUM_ONE 128 //number of 1 or -1 in noise vector
 #define HASH_TYPE "SHA256"
 #define SAMPLE_LEN 590
+#define MASK 0x1ff//mask the index of sk
 #endif
 
 #if defined(LAC192)
@@ -50,6 +52,7 @@
 #define NUM_ONE 128 //number of 1 or -1 in noise vector
 #define HASH_TYPE "SHA256"
 #define SAMPLE_LEN 495
+#define MASK 0x3ff//mask the index of sk
 #endif
 
 #if defined(LAC256)
@@ -65,4 +68,5 @@
 #define NUM_ONE 192 //number of 1 or -1 in noise vector
 #define HASH_TYPE "SHA256"
 #define SAMPLE_LEN 815
+#define MASK 0x3ff//mask the index of sk
 #endif

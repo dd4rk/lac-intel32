@@ -96,12 +96,12 @@ static int mul_core(const uint8_t *a, const uint8_t *s, int32_t *sum1, int32_t *
     memset(sum2, 0, vec_num * sizeof(int32_t));
 
     for (i = 0; i < NUM_ONE; i++) {
-        v1_p = v + DIM_N - s_one[i];
+        v1_p = v + DIM_N - (s_one[i] & MASK);
         for (j = 0; j < vec_num; j++) {
             sum1[j] += v1_p[j];
         }
 
-        v2_p = v + DIM_N - s_minusone[i];
+        v2_p = v + DIM_N - (s_minusone[i] & MASK);
         for (j = 0; j < vec_num; j++) {
             sum2[j] -= v2_p[j];
         }
