@@ -1,3 +1,7 @@
+#ifndef ECC_H
+#define ECC_H
+
+#include <stdint.h>
 #include "lac_param.h"
 
 #if defined(LAC_LIGHT)
@@ -28,9 +32,9 @@
 #define CODE_LEN 55 
 #endif
 
-//error correction encode
+// error correction encode
 int ecc_enc(const uint8_t *d, uint8_t *c);
-
-//error corrction decode
+// error corrction decode
 int ecc_dec(uint8_t *d, const uint8_t *c);
 
+#endif
