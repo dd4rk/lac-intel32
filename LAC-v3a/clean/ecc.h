@@ -29,7 +29,7 @@
 //D2+bch(511,264,33)
 #define DATA_LEN 32
 #define ECC_LEN 23
-#define CODE_LEN 55 
+#define CODE_LEN 55
 #endif
 
 // error correction encode

@@ -8,8 +8,7 @@
 #define TRUE  1
 
 
-static int kem_test(const char *named_parameters, int iterations)
-{
+static int kem_test(const char *named_parameters, int iterations) {
     uint8_t pk[CRYPTO_PUBLICKEYBYTES];
     uint8_t sk[CRYPTO_SECRETKEYBYTES];
     uint8_t ss_encap[CRYPTO_BYTES], ss_decap[CRYPTO_BYTES];
@@ -24,7 +23,7 @@ static int kem_test(const char *named_parameters, int iterations)
         crypto_kem_dec(ss_decap, ct, sk);
         if (memcmp(ss_encap, ss_decap, CRYPTO_BYTES) != 0) {
             printf("\n ERROR!\n");
-	        return FALSE;
+            return FALSE;
         }
     }
     printf("Tests PASSED. All session keys matched.\n");
@@ -33,8 +32,7 @@ static int kem_test(const char *named_parameters, int iterations)
     return TRUE;
 }
 
-static void kem_bench(const int seconds)
-{
+static void kem_bench(const int seconds) {
     uint8_t pk[CRYPTO_PUBLICKEYBYTES];
     uint8_t sk[CRYPTO_SECRETKEYBYTES];
     uint8_t ss_encap[CRYPTO_BYTES], ss_decap[CRYPTO_BYTES];
@@ -50,8 +48,7 @@ static void kem_bench(const int seconds)
 }
 
 
-int main()
-{
+int main() {
     int OK = TRUE;
 
     OK = kem_test(CRYPTO_ALGNAME, KEM_TEST_ITERATIONS);
