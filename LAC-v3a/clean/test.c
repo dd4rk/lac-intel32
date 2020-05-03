@@ -1,48 +1,68 @@
-#include <stdio.h>
 #include <string.h>
-#include <stdint.h>
+#include "ds_benchmark.h"
 #include "api.h"
-#include "rand.h"
 
-#define CTESTS 10000
-#define LOOP 1000
+#define KEM_TEST_ITERATIONS 1000
+#define KEM_BENCH_SECONDS 1
+#define FALSE 0
+#define TRUE  1
 
-static void print_uint64(unsigned long long num)
+
+static int kem_test(const char *named_parameters, int iterations)
 {
-	if(num>=10)
-		print_uint64(num/10);
-	printf("%u",(unsigned int)(num%10));
+    uint8_t pk[CRYPTO_PUBLICKEYBYTES];
+    uint8_t sk[CRYPTO_SECRETKEYBYTES];
+    uint8_t ss_encap[CRYPTO_BYTES], ss_decap[CRYPTO_BYTES];
+    uint8_t ct[CRYPTO_CIPHERTEXTBYTES];
+
+    printf("\n");
+    printf("Testing correctness of %s, tests for %d iterations\n", named_parameters, iterations);
+
+    for (int i = 0; i < iterations; i++) {
+        crypto_kem_keypair(pk, sk);
+        crypto_kem_enc(ct, ss_encap, pk);
+        crypto_kem_dec(ss_decap, ct, sk);
+        if (memcmp(ss_encap, ss_decap, CRYPTO_BYTES) != 0) {
+            printf("\n ERROR!\n");
+	        return FALSE;
+        }
+    }
+    printf("Tests PASSED. All session keys matched.\n");
+    printf("\n");
+
+    return TRUE;
 }
+
+static void kem_bench(const int seconds)
+{
+    uint8_t pk[CRYPTO_PUBLICKEYBYTES];
+    uint8_t sk[CRYPTO_SECRETKEYBYTES];
+    uint8_t ss_encap[CRYPTO_BYTES], ss_decap[CRYPTO_BYTES];
+    uint8_t ct[CRYPTO_CIPHERTEXTBYTES];
+
+    TIME_OPERATION_SECONDS({ crypto_kem_keypair(pk, sk); }, "Key generation", seconds);
+
+    crypto_kem_keypair(pk, sk);
+    TIME_OPERATION_SECONDS({ crypto_kem_enc(ct, ss_encap, pk); }, "KEM encapsulate", seconds);
+
+    crypto_kem_enc(ct, ss_encap, pk);
+    TIME_OPERATION_SECONDS({ crypto_kem_dec(ss_decap, ct, sk); }, "KEM decapsulate", seconds);
+}
+
 
 int main()
 {
-	uint8_t pk[CRYPTO_PUBLICKEYBYTES];
-	uint8_t sk[CRYPTO_SECRETKEYBYTES];
-	uint8_t k1[CRYPTO_BYTES],k2[CRYPTO_BYTES],c[CRYPTO_CIPHERTEXTBYTES];
-	size_t i,j;
-	long long int  error_num=0;
-	
-	printf("correctness test of kem_fo:\n");
-	for(j=0;j<LOOP;j++)
-	{
-		crypto_kem_keypair(pk,sk);
-		random_bytes(k1,CRYPTO_BYTES);
-		for(i=0;i<CTESTS;i++)
-		{
-			crypto_kem_enc(c,k1,pk);
-			crypto_kem_dec(k2,c,sk);
-			
-			if(memcmp(k1,k2,CRYPTO_BYTES)!=0)
-			{
-				error_num++;
-			}
-			
-		}
-		printf("test %lu error block:",j+1);
-		print_uint64(error_num);
-		printf("\n");
-	}
-	printf("\n");
+    int OK = TRUE;
 
-	return error_num;
+    OK = kem_test(CRYPTO_ALGNAME, KEM_TEST_ITERATIONS);
+    if (OK != TRUE) {
+        goto exit;
+    }
+
+    PRINT_TIMER_HEADER
+    kem_bench(KEM_BENCH_SECONDS);
+    PRINT_TIMER_FOOTER
+
+exit:
+    return (OK == TRUE) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
